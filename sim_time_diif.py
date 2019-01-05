@@ -153,22 +153,24 @@ def main():
     p3  = PacketGenerator(env,'flow4',pram[6],pram[5])
 
     #Probing packets with no Intraprobe gap. 
-    ph  = PacketGenerator(env,'ph',0.0001, 64)
-    pt = PacketGenerator(env, 'pt',0.0002, 1000)
+    #ph  = PacketGenerator(env,'ph',0.0001, 64)
+    #pt = PacketGenerator(env, 'pt',0.0002, 1000)
 
     # packet sink to monitor the packets.
-    ps  = PacketSink(env,pram[1],debug=True)
+    ps  = PacketSink(env,debug=True)
     
     p0.out = ps 
     p1.out = ps 
     p2.out = ps
     p3.out = ps
-    ph.out = ps
-    pt.out = ps
+    #ph.out = ps
+    #pt.out = ps
 
-    
+    env.process(monitor(env,ps.res))
     env.run(10)
-    monitor(ps.env,ps.res)
+    print(ps.packets_rec)
+   
+   
     #draw the plot
     plt.figure()
     plt.plot(mon_t,que_len)
